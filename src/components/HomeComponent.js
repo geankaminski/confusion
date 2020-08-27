@@ -13,7 +13,6 @@ function RenderCard({item}) {
             </CardBody>
         </Card>
     );
-
 }
 
 function Home(props) {
