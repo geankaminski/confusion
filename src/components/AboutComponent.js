@@ -1,24 +1,28 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
+import { Stagger, Fade } from 'react-animation-components';
 
-function RenderLeader({leader}){
-            return (
-                <div key={leader.id} className="col-12 mt-5">
-                    <Media tag="li">
+function RenderLeader({ leader }) {
+    return (
+        <Fade in>
+            <div key={leader.id} className="col-12 mt-5">
+                <Media tag="li">
                     <Media left middle>
-                    <Media object src={leader.image} alt={leader.name} /></Media>
+                        <Media object src={baseUrl + leader.image} alt={leader.name} />
+                    </Media>
                     <Media body className="ml-5">
-                    <Media heading>{leader.name}</Media>
-                    <p>{leader.designation}</p>
-                    <p>{leader.description}</p>
+                        <Media heading>{leader.name}</Media>
+                        <h6>{leader.designation}</h6>
+                        <p>{leader.description}</p>
                     </Media>
-                    </Media>
-                </div>
-            ); 
+                </Media>
+            </div>
+        </Fade>
+    );
 }
-
-
 
 function About(props) {
 
@@ -28,7 +32,25 @@ function About(props) {
         );
     });
 
-    return(
+    function RenderLeaders() {
+
+        if (props.isLoading) {
+            return <Loading />;
+        }
+        else if (props.errMessage) {
+            return (
+                <h4>{props.errMessage}</h4>
+            );
+        }
+        else return (
+            <Media list>
+                <Stagger in>
+                    {leaders}
+                </Stagger>
+            </Media>
+        );
+    }
+    return (
         <div className="container">
             <div className="row">
                 <Breadcrumb>
@@ -38,12 +60,12 @@ function About(props) {
                 <div className="col-12">
                     <h3>About Us</h3>
                     <hr />
-                </div>                
+                </div>
             </div>
             <div className="row row-content">
                 <div className="col-12 col-md-6">
                     <h2>Our History</h2>
-                    <p>Started in 2010, Ristorante con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us.</p>
+                    <p>Started in 2010, Restaurant Con Fusion quickly established itself as a culinary icon par excellence in Hong Kong. With its unique brand of world fusion cuisine that can be found nowhere else, it enjoys patronage from the A-list clientele Mumbai.  Featuring four of the best three-star Michelin chefs in the world, you never know what will arrive on your plate the next time you visit us.</p>
                     <p>The restaurant traces its humble beginnings to <em>The Frying Pan</em>, a successful chain started by our CEO, Mr. Peter Pan, that featured for the first time the world's best cuisines in a pan.</p>
                 </div>
                 <div className="col-12 col-md-5">
@@ -62,7 +84,7 @@ function About(props) {
                             </dl>
                         </CardBody>
                     </Card>
-                </div>
+                </div>-
                 <div className="col-12">
                     <Card>
                         <CardBody className="bg-faded">
@@ -81,15 +103,13 @@ function About(props) {
             <div className="row row-content">
                 <div className="col-12">
                     <h2>Corporate Leadership</h2>
-                </div> 
+                </div>
                 <div className="col-12">
-                    <Media list>
-                        {leaders}
-                    </Media>
+                    <RenderLeaders />
                 </div>
             </div>
         </div>
     );
 }
 
-export default About;    
+export default About; 
