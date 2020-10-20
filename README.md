@@ -4,6 +4,5 @@ conFusion (Ristorante con Fusion) responsive webapp using React, Redux, reactstr
 
 # To start the Server
 
-
 * yarn install
 * yarn dev
